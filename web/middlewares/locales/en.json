@@ -12,15 +12,17 @@
 		"400": "Bad Request.",
 		"402": "Incorrect Password.",
 		"405": "No records found",
-		"406": "found something",
+		"406": "token creation failed",
 		"409": "your account can't be accessed",
 		"410": "oops! saving failed",
 		"411": "fetching account failed",
 		"412": "Account is'nt here",
-		"413": "Error while some data updation",
+		"413": "Error while data updation",
 		"414": "Token generation failed",
 		"415": "updated successfully",
-		"417": "deleted successfully"
+		"417": "deleted successfully",
+		"418": "userName is wrong",
+		"419": "userName already exists"
 	}
 
 }

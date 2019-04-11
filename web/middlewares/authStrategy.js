@@ -7,9 +7,13 @@ let secretKey = 'isSecret';
 
 const ValidateJWT = async (decoded, request) => {
     request._id=decoded._id;
+    request.userName=decoded.userName;
     let isMatch = await auth.codeCheck(decoded.userName,decoded.accessCode);
-    let isValid = isMatch ? true : false;
-    return { isValid: isValid };
+    return await isMatch == -1 
+                                ? {isValid:false}
+                                :isMatch==-2
+                                ?{isValid:false}
+                                :{isValid:true}
 };
 
 function tokenError(context) {
