@@ -27,6 +27,23 @@ const baseURL =  'http://localhost:3005';
 //         done();
 //     });
 // });
+
+ const HeadersLocal ={
+    host: 'localhost:3005',
+    connection: 'keep-alive',
+    accept: 'application/json',
+    authorization: '',
+    'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/68.0.3440.75 Chrome/68.0.3440.75 Safari/537.36',
+    lan: 'en',
+    referer: 'http://localhost:3005/documentation',
+    referer: 'http://localhost:3005',
+    'accept-encoding': 'gzip, deflate, br',
+    'accept-language': 'en-US,en;q=0.9' 
+  } 
+
+
+
+////////////////payload
 const phoneNumber =  (Math.floor(Math.random()*9999999999)+1000000000).toString();
 
 const payload =  {
@@ -37,34 +54,125 @@ const payload =  {
                         phone:phoneNumber,
                         password:"password" 
                     }
-console.log(payload)
+
+
+const updatedPayload =  {
+  userName: payload.userName,
+  firstName: payload.firstName,
+  lastName: payload.lastName,
+  email: payload.email,
+  phone: (Math.floor(Math.random()*9999999999)+1000000000).toString(),
+}
+console.log(updatedPayload);
+//////////////login creds
 const loginCreds = {
     userName : payload.userName,
     password : "password"
 }
+
+
+let token = '';
+
+
 it('should return 200 + data entered with +info',(done)=>{
     chai.request(baseURL)
     .post('/customer/signup')
     .send(payload)
     .end((err,res)=>{
-        try{
-      console.log("!!!!!!!!!!!",res.body,"##########",err)
       res.should.have.status(200);
       res.should.be.json;
       res.body.should.be.a('object');
       res.body.data.should.have.property('insertedCount');
       res.body.data.should.have.property('ops');
       res.body.should.have.property('code');
-      res.body.code.should.equal(200);
+      res.body.code.should.equal(200)
+      console.log(res.body.data)
+
+
+
+
       chai.request(baseURL)
       .post('/customer/login')
       .send(loginCreds)
       .end((err,res)=>{
-          
+      HeadersLocal.authorization=res.body.data;
+        res.should.have.status(200);
+        res.should.be.json;
+        res.body.should.be.a('object');
+        res.body.should.have.property('message');
+        res.body.should.have.property('data');
+        res.body.should.have.property('code');
+        res.body.code.should.equal(200);
+        token = res.body.data;
+
+
+
+        chai.request(baseURL)
+        .get('/customer/gain')
+        .set('authorization',token)
+        .end((err,res)=>{
+          res.should.have.status(200);
+          res.should.be.json;
+          res.body.should.be.a('object');
+          res.body.should.have.property('message');
+          res.body.should.have.property('data');
+          res.body.should.have.property('code');
+          res.body.code.should.equal(200);
+
+
+          chai.request(baseURL)
+          .get('/customer/gain/id')
+          .set('authorization',token)
+          .end((err,res)=>{
+            res.should.have.status(200);
+            res.should.be.json;
+            res.body.should.be.a('object');
+            res.body.should.have.property('message');
+            res.body.should.have.property('data');
+            res.body.should.have.property('code');
+            res.body.code.should.equal(200);
+
+
+            chai.request(baseURL)
+          .put('/customer/edit')
+          .set('authorization',token)
+          .send(updatedPayload)
+          .end((err,res)=>{
+            console.log(res.body.data)
+            res.should.have.status(200);
+            res.should.be.json;
+            res.body.should.be.a('object');
+            res.body.should.have.property('message');
+            res.body.should.have.property('data');
+            res.body.should.have.property('code');
+            res.body.code.should.equal(200);
+
+
+            chai.request(baseURL)
+            .delete('/customer/obliterate')
+            .set('authorization',token)
+            .end((err,res)=>{
+              console.log(res.body.data)
+              res.should.have.status(200);
+              res.should.be.json;
+              res.body.should.be.a('object');
+              res.body.should.have.property('message');
+              res.body.should.have.property('data');
+              res.body.should.have.property('code');
+              res.body.code.should.equal(200);
+            })
+
+
+          })
+
+          })
+  
+
+        })
+
+
       })
+
         done();
-        }catch(err){
-            console.log(err);
-        }
     });
 });

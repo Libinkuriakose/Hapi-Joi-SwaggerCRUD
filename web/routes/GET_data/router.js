@@ -23,7 +23,7 @@ module.exports= [
             notes: errorMsg['genericErrMsg']['userErrMsg'],
             auth:'simpleAuth',
             handler:  getHandle.handler,
-            // response: getHandle.responseCode,
+            response: getHandle.responseCode,
             validate: {
                 headers: headerValidator.headerAuthValidator,
                 failAction: (req, h, err) => {
