@@ -1,16 +1,14 @@
-var mqtt = require('mqtt')
-var client  = mqtt.connect('mqtt://test.mosquitto.org')
- 
-client.on('connect', function () {
-  client.subscribe('presence', function (err) {
-    if (!err) {
-      client.publish('presence', 'Hello mqtt')
-    }
-  })
-})
- 
-client.on('message', function (topic, message) {
-  // message is Buffer
-  console.log(message.toString())
-  client.end()
-})
+const faker = require('faker') ;
+const phoneNumber =  (Math.floor(Math.random()*9999999999)+1000000000).toString();
+const payload =  {
+    userName:faker.internet.userName(),
+    firstName: faker.name.firstName(),
+    lastName: faker.name.lastName(),
+    email: faker.internet.email(),
+    phone:phoneNumber,
+    password:"password" 
+}
+console.log(payload)
+console.log(payload.userName)
+const a = payload.userName;
+console.log(a);
