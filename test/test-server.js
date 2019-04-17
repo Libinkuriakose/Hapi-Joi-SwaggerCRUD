@@ -9,24 +9,6 @@ chai.use(chaiHttp);
 const baseURL =  'http://localhost:3005';
 
 
-// it('should list ALL blobs on /blobs GET', function(done) {
-//     chai.request('http://localhost:3005/')
-//       .post('customer/gain')
-//       .end(function(err, res){
-//         res.should.have.status(200);
-//         done();
-//       });
-//   });
-// it('should return 200 + data entered with +info',(done)=>{
-//     chai.request(baseURL).post('/customer/signup')
-//     .send(payload)
-//     .end((err,res)=>{
-//         res.should.have.status(200);
-//         res.should.be.json;
-//         res.body.should.be.a('object');
-//         done();
-//     });
-// });
 
  const HeadersLocal ={
     host: 'localhost:3005',
@@ -63,7 +45,6 @@ const updatedPayload =  {
   email: payload.email,
   phone: (Math.floor(Math.random()*9999999999)+1000000000).toString(),
 }
-console.log(updatedPayload);
 //////////////login creds
 const loginCreds = {
     userName : payload.userName,
@@ -86,7 +67,6 @@ it('should return 200 + data entered with +info',(done)=>{
       res.body.data.should.have.property('ops');
       res.body.should.have.property('code');
       res.body.code.should.equal(200)
-      console.log(res.body.data)
 
 
 
@@ -138,7 +118,6 @@ it('should return 200 + data entered with +info',(done)=>{
           .set('authorization',token)
           .send(updatedPayload)
           .end((err,res)=>{
-            console.log(res.body.data)
             res.should.have.status(200);
             res.should.be.json;
             res.body.should.be.a('object');
@@ -146,13 +125,13 @@ it('should return 200 + data entered with +info',(done)=>{
             res.body.should.have.property('data');
             res.body.should.have.property('code');
             res.body.code.should.equal(200);
+            
 
 
             chai.request(baseURL)
             .delete('/customer/obliterate')
             .set('authorization',token)
             .end((err,res)=>{
-              console.log(res.body.data)
               res.should.have.status(200);
               res.should.be.json;
               res.body.should.be.a('object');
