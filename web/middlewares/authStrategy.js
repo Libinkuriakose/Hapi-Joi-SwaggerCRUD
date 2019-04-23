@@ -4,7 +4,7 @@ const auth = require('../../models/sampleDBManage/auth');
 var AUTH = module.exports = {};
 
 let secretKey = 'isSecret';
-
+//
 const ValidateJWT = async (decoded, request) => {
     request._id=decoded._id;
     request.userName=decoded.userName;
